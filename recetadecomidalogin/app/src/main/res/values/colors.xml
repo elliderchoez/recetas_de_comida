@@ -1,0 +1,18 @@
+<!-- res/values/colors.xml -->
+<resources>
+    <!-- Fondo y superficies -->
+    <color name="bg_chalk">#171717</color>          <!-- pizarra oscuro -->
+    <color name="surface_dark">#222222</color>      <!-- tarjeta oscura -->
+    <color name="surface_input">#E9E5DB</color>     <!-- beige inputs -->
+
+    <!-- Texto -->
+    <color name="text_on_dark">#F5F5F5</color>
+    <color name="text_primary">#1F2937</color>      <!-- para inputs -->
+    <color name="text_hint">#8A8A8A</color>
+    <color name="text_muted">#BDBDBD</color>
+
+    <!-- Acento -->
+    <color name="accent_green">#246B58</color>      <!-- botón -->
+    <color name="accent_green_end">#1F5A4A</color>  <!-- gradiente -->
+    <color name="accent_link">#CDE7DF</color>       <!-- forgot/signup -->
+</resources>
