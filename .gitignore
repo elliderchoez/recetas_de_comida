@@ -1,15 +1,47 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+# Archivos de sistema
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+Thumbs.db
+
+# Archivos de configuración de Android Studio
+*.iml
+.idea/
+.gradle/
 local.properties
+.cxx/
+.externalNativeBuild/
+
+# Archivos específicos de .idea (ya cubiertos, pero puedes simplificar con .idea/)
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Archivos de compilación
+/build/
+*/build/
+captures/
+
+# Archivos sensibles
+google-services.json
+*.keystore
+*.jks
+.env
+
+# Archivos de salida
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Archivos de prueba y cobertura
+/test-output/
+*.ec
+*.hprof
+
+# Archivos de empaquetado
+*.zip
+*.tar.gz
+*.aar
+*.jar
