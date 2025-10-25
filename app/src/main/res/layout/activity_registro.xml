@@ -4,180 +4,201 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/registerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
-    <!-- Fondo -->
-    <ImageView
-        android:id="@+id/bg"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/background_food"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Oscurecer fondo -->
-    <View
-        android:id="@+id/scrim"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#80000000"
-        app:layout_constraintTop_toTopOf="@id/bg"
-        app:layout_constraintBottom_toBottomOf="@id/bg"
-        app:layout_constraintStart_toStartOf="@id/bg"
-        app:layout_constraintEnd_toEndOf="@id/bg" />
-
-    <!-- Logo -->
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:src="@drawable/logo"
-        android:contentDescription="@string/app_name"
-        android:layout_marginTop="34dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <!-- Tarjeta del formulario -->
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-30dp"
-        android:text="Crear una cuenta"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/registerCard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="10dp"
-        app:layout_constraintTop_toBottomOf="@id/logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="#FFFFFF">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:paddingBottom="200dp"> <!-- espacio extra para el teclado -->
 
-            <!-- Nombre completo -->
-            <EditText
-                android:id="@+id/nameInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/edit_text"
-                android:drawableStart="@android:drawable/ic_menu_myplaces"
-                android:drawablePadding="12dp"
-                android:hint="Nombre completo"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:padding="12dp"
-                android:textColor="#1F2937"
-                android:textColorHint="#9CA3AF"
-                android:textSize="16sp" />
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/logo"
+                android:contentDescription="@string/app_name"
+                android:layout_marginTop="34dp"/>
 
-            <!-- Email -->
-            <EditText
-                android:id="@+id/emailInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@android:drawable/edit_text"
-                android:drawableStart="@android:drawable/ic_dialog_email"
-                android:drawablePadding="12dp"
-                android:hint="Correo electrónico"
-                android:inputType="textEmailAddress"
-                android:minHeight="48dp"
-                android:padding="12dp"
-                android:textColor="#1F2937"
-                android:textColorHint="#9CA3AF"
-                android:textSize="16sp" />
-
-            <!-- Contraseña -->
-            <EditText
-                android:id="@+id/passwordInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@android:drawable/edit_text"
-                android:drawableStart="@android:drawable/ic_lock_idle_lock"
-                android:drawablePadding="12dp"
-                android:hint="Contraseña"
-                android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:padding="12dp"
-                android:textColor="#1F2937"
-                android:textColorHint="#9CA3AF"
-                android:textSize="16sp" />
-
-            <!-- Repetir contraseña -->
-            <EditText
-                android:id="@+id/confirmPasswordInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@android:drawable/edit_text"
-                android:drawableStart="@android:drawable/ic_lock_idle_lock"
-                android:drawablePadding="12dp"
-                android:hint="Repetir contraseña"
-                android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:padding="12dp"
-                android:textColor="#1F2937"
-                android:textColorHint="#9CA3AF"
-                android:textSize="16sp" />
-
-            <!-- Botón registrar -->
-            <Button
-                android:id="@+id/registerButton"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="#D4AF37"
-                android:fontFamily="sans-serif-medium"
-                android:text="Registrarse"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
-            <!-- Volver al login -->
+            <!-- Título -->
             <TextView
-                android:id="@+id/goToLogin"
+                android:id="@+id/titleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:text="¿Ya tienes cuenta? Inicia sesión"
-                android:textColor="#D4AF37"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="Crear una cuenta"
+                android:textColor="#1F2937"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
 
-    <!-- Footer -->
-    <TextView
-        android:id="@+id/footer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="© Food Art"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:alpha="0.7"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <!-- CardView formulario -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Nombre -->
+                    <EditText
+                        android:id="@+id/nameInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/borde_dorado"
+                        android:hint="Nombre completo"
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp"
+                        android:padding="12dp"
+                        android:textColor="#1F2937"
+                        android:textColorHint="#9CA3AF"
+                        android:textSize="16sp"/>
+
+                    <!-- Email -->
+                    <EditText
+                        android:id="@+id/emailInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/borde_dorado"
+                        android:hint="Correo electrónico"
+                        android:inputType="textEmailAddress"
+                        android:minHeight="48dp"
+                        android:padding="12dp"
+                        android:textColor="#1F2937"
+                        android:textColorHint="#9CA3AF"
+                        android:textSize="16sp"/>
+
+                    <!-- Contraseña -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp">
+
+                        <EditText
+                            android:id="@+id/passwordInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/borde_dorado"
+                            android:hint="Contraseña"
+                            android:inputType="textPassword"
+                            android:minHeight="48dp"
+                            android:padding="12dp"
+                            android:textColor="#1F2937"
+                            android:textColorHint="#9CA3AF"
+                            android:textSize="16sp"/>
+
+                        <ImageView
+                            android:id="@+id/togglePassword"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_visibility_off"
+                            android:contentDescription="Mostrar contraseña"
+                            android:clickable="true"
+                            android:focusable="true"/>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/passwordRulesText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="La contraseña debe tener al menos 6 caracteres, una mayúscula"
+                        android:textColor="#6B7280"
+                        android:textSize="13sp"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"/>
+
+                    <!-- Confirmar contraseña -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp">
+
+                        <EditText
+                            android:id="@+id/confirmPasswordInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/borde_dorado"
+                            android:hint="Confirmar contraseña"
+                            android:inputType="textPassword"
+                            android:minHeight="48dp"
+                            android:padding="12dp"
+                            android:textColor="#1F2937"
+                            android:textColorHint="#9CA3AF"
+                            android:textSize="16sp"/>
+
+                        <ImageView
+                            android:id="@+id/toggleConfirmPassword"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_visibility_off"
+                            android:contentDescription="Mostrar contraseña"
+                            android:clickable="true"
+                            android:focusable="true"/>
+                    </RelativeLayout>
+
+                    <!-- Botón registrar -->
+                    <Button
+                        android:id="@+id/registerButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#D4AF37"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Registrarse"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+                    <!-- Texto login -->
+                    <TextView
+                        android:id="@+id/goToLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:text="¿Ya tienes una cuenta? Inicia sesión"
+                        android:textColor="#D4AF37"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Footer -->
+            <TextView
+                android:id="@+id/footer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="© Food Art"
+                android:textColor="#6B7280"
+                android:textSize="12sp"
+                android:alpha="0.7"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"/>
+        </LinearLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

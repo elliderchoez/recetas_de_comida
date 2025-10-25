@@ -2,22 +2,25 @@ package com.example.recetadecomidalogin
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-
-import android.util.Log
-import android.os.Handler
-import android.os.Looper
+import androidx.lifecycle.lifecycleScope
+import com.example.recetadecomidalogin.cloud.FirebaseService
+import com.example.recetadecomidalogin.database.AppDatabase
+import com.example.recetadecomidalogin.model.UsuarioEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RegistroActivity : AppCompatActivity() {
 
@@ -33,6 +36,17 @@ class RegistroActivity : AppCompatActivity() {
             insets
         }
 
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+
+        // Función para que el ScrollView haga scroll hasta el EditText enfocado
+        fun scrollToView(view: View) {
+            scrollView.post {
+                scrollView.smoothScrollTo(0, view.top)
+            }
+        }
+
+
+
         // Views
         val nameInput = findViewById<EditText>(R.id.nameInput)
         val emailInput = findViewById<EditText>(R.id.emailInput)
@@ -40,7 +54,17 @@ class RegistroActivity : AppCompatActivity() {
         val confirmPasswordInput = findViewById<EditText>(R.id.confirmPasswordInput)
         val registerButton = findViewById<Button>(R.id.registerButton)
         val goToLogin = findViewById<TextView>(R.id.goToLogin)
+        val togglePass = findViewById<ImageView>(R.id.togglePassword)
+        val toggleConfirm = findViewById<ImageView>(R.id.toggleConfirmPassword)
 
+        confirmPasswordInput.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) scrollToView(v)
+        }
+        registerButton.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) scrollToView(v)
+        }
+
+        // Ocultar teclado
         fun hideKeyboard() {
             currentFocus?.let { view ->
                 val imm = getSystemService<InputMethodManager>()
@@ -49,6 +73,27 @@ class RegistroActivity : AppCompatActivity() {
             }
         }
 
+        // Mostrar/Ocultar contraseñas
+        fun toggleVisibility(editText: EditText, toggleIcon: ImageView) {
+            if (editText.inputType == (android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                editText.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                toggleIcon.setImageResource(R.drawable.ic_visibility_off)
+            } else {
+                editText.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+                toggleIcon.setImageResource(R.drawable.ic_visibility)
+            }
+            editText.setSelection(editText.text.length)
+        }
+
+        togglePass.setOnClickListener {
+            toggleVisibility(passwordInput, togglePass)
+        }
+
+        toggleConfirm.setOnClickListener {
+            toggleVisibility(confirmPasswordInput, toggleConfirm)
+        }
+
+        // Validación
         fun validate(): Boolean {
             var ok = true
             val name = nameInput.text.toString().trim()
@@ -67,10 +112,10 @@ class RegistroActivity : AppCompatActivity() {
             } else emailInput.error = null
 
             // Contraseña
-            val passRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{6,}\$")
+            val passRegex = Regex("^(?=.*[A-Z]).{6,}$")
             if (!pass.matches(passRegex)) {
                 passwordInput.error =
-                    "Debe tener al menos 6 caracteres, una mayúscula, una minúscula y un símbolo"
+                    "Debe tener al menos 6 caracteres, una mayúscula"
                 ok = false
             } else passwordInput.error = null
 
@@ -79,20 +124,44 @@ class RegistroActivity : AppCompatActivity() {
                 confirmPasswordInput.error = "Las contraseñas no coinciden"
                 ok = false
             } else confirmPasswordInput.error = null
+
             return ok
         }
 
         registerButton.setOnClickListener {
             hideKeyboard()
             if (validate()) {
-                val name = nameInput.text.toString().trim()
-                Toast.makeText(this, "Registro exitoso: $name", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                val nombre = nameInput.text.toString().trim()
+                val email = emailInput.text.toString().trim()
+                val password = passwordInput.text.toString().trim()
+
+                val usuario = UsuarioEntity(nombre = nombre, email = email, password = password)
+                val dao = AppDatabase.getInstance(this).usuarioDao()
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+
+                        dao.insertar(usuario)
+
+
+                        FirebaseService.guardarUsuario(usuario)
+
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@RegistroActivity, "Registro exitoso: $nombre", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@RegistroActivity, MainActivity::class.java))
+                            finish()
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@RegistroActivity, "Error al registrar: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
             } else {
                 Toast.makeText(this, "Revisa los campos", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         goToLogin.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
@@ -100,15 +169,13 @@ class RegistroActivity : AppCompatActivity() {
         }
     }
 
-    // <-- onResume()  - Enfoca nombre completo y muestra teclado -->
     override fun onResume() {
         super.onResume()
         val nameInput = findViewById<EditText>(R.id.nameInput)
         nameInput.requestFocus()
         Handler(Looper.getMainLooper()).postDelayed({
             val imm = getSystemService<InputMethodManager>()
-            imm?.showSoftInput(nameInput, InputMethodManager.SHOW_FORCED)  // <-- Cambiado a SHOW_FORCED para obligar
-            Log.d("Lifecycle", "Teclado forzado mostrado para nameInput")  // Log extra para debug
-        }, 200)  // 200ms de delay (ajusta si es necesario: 100-300ms)
+            imm?.showSoftInput(nameInput, InputMethodManager.SHOW_FORCED)
+        }, 200)
     }
 }

@@ -1,0 +1,1 @@
+data class Post(val imageUrl: String, var likes: Int, val comments: String)
